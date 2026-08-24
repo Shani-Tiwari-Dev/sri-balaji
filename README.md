@@ -99,13 +99,39 @@ with real slab photography before launch.
 
 ## Deploying
 
-Any host that runs Flask works (Render, Railway, Fly.io, a VPS with
-gunicorn). Example production start command:
+### Option A — Render / Railway / Fly.io / a VPS (recommended)
+
+Any host that runs Flask works. Example production start command:
 
 ```bash
 gunicorn -w 4 -b 0.0.0.0:$PORT app:app
 ```
 
-Point `DATABASE_URL` at your Supabase Postgres instance and set a strong
-`SECRET_KEY` and your own `STAFF_PASSWORDS` in the host's environment
-variables (don't upload your real `.env` file anywhere public).
+(Root/start directory = `backend`.) Point `DATABASE_URL` at your Supabase
+Postgres instance and set a strong `SECRET_KEY` and your own
+`STAFF_PASSWORDS` in the host's environment variables (don't upload your
+real `.env` file anywhere public).
+
+### Option B — Vercel
+
+The repo includes `vercel.json` and `api/index.py`, which turn the Flask
+app into a Vercel serverless function and serve the frontend files from the
+same function.
+
+1. Import the repo into Vercel (framework preset: "Other" — no build step
+   needed).
+2. In **Project Settings → Environment Variables**, add:
+   - `DATABASE_URL` — your Supabase Postgres connection string
+   - `SECRET_KEY` — a long random string
+   - `STAFF_PASSWORDS` — your own comma-separated list
+   - `CORS_ORIGINS` — your Vercel domain (or `*` while testing)
+   - `WHATSAPP_NUMBER`, `WHATSAPP_NUMBER_SECONDARY` — optional
+3. Deploy. Vercel builds `api/index.py`, which imports the same Flask app
+   from `backend/app.py`, so every route (`/`, `/staff`, `/api/...`, static
+   assets) is served by that one function.
+
+Note: Vercel functions are stateless/serverless — each request may hit a
+cold start and open a fresh DB connection. That's fine for light traffic
+against Supabase Postgres, but if you outgrow it, Option A (a normal
+long-running server) will behave more predictably and is closer to how
+this app was originally built.

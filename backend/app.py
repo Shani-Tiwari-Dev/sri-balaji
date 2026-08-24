@@ -21,6 +21,16 @@ def create_app():
     CORS(app, origins=app.config["CORS_ORIGINS"])
     db.init_app(app)
 
+    # Create tables on startup. This runs the first time the app/module is
+    # loaded (works for `python app.py`, gunicorn, AND serverless platforms
+    # like Vercel where there's no separate "first run" step). Safe to call
+    # repeatedly — create_all() only creates tables that don't exist yet.
+    with app.app_context():
+        try:
+            db.create_all()
+        except Exception as exc:  # pragma: no cover - don't crash cold start on a transient DB hiccup
+            app.logger.warning("db.create_all() failed at startup: %s", exc)
+
     # ---------------------------------------------------------------
     # Static frontend
     # ---------------------------------------------------------------
@@ -469,6 +479,4 @@ app = create_app()
 
 if __name__ == "__main__":
     import os
-    with app.app_context():
-        db.create_all()
-    app.run(host="0.0.0.0", port=int(__import__("os").environ.get("PORT", 5000)), debug=app.config.get("FLASK_DEBUG", True))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=app.config.get("FLASK_DEBUG", True))
