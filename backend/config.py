@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from sqlalchemy.pool import NullPool
 
 load_dotenv()
 
@@ -20,6 +21,16 @@ def _database_uri():
 class Config:
     SQLALCHEMY_DATABASE_URI = _database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Serverless platforms (Vercel) spin up a fresh process per request/cold
+    # start, so a persistent connection pool just accumulates dead
+    # connections against Supabase's connection limit. NullPool opens a
+    # connection per request and closes it right after — the right model
+    # for this environment. pool_pre_ping guards against the odd stale
+    # connection on traditional long-running hosts (Option A).
+    if os.environ.get("VERCEL"):
+        SQLALCHEMY_ENGINE_OPTIONS = {"poolclass": NullPool}
+    else:
+        SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-me")
     JWT_EXPIRY_HOURS = int(os.environ.get("JWT_EXPIRY_HOURS", "12"))
 

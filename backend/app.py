@@ -31,6 +31,19 @@ def create_app():
         except Exception as exc:  # pragma: no cover - don't crash cold start on a transient DB hiccup
             app.logger.warning("db.create_all() failed at startup: %s", exc)
 
+    # Without this, an unhandled exception returns Flask's default HTML
+    # error page. The frontend's fetch wrapper expects JSON and falls back
+    # to a generic "Request failed (500)" with no detail. This returns the
+    # real error message instead, so it's actually debuggable from the
+    # browser's Network tab (and from Vercel's function logs either way).
+    @app.errorhandler(Exception)
+    def handle_unexpected_error(err):
+        app.logger.exception("Unhandled error")
+        code = getattr(err, "code", 500)
+        if not isinstance(code, int):
+            code = 500
+        return jsonify({"error": str(err) or err.__class__.__name__}), code
+
     # ---------------------------------------------------------------
     # Static frontend
     # ---------------------------------------------------------------
