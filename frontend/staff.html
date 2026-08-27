@@ -30,7 +30,20 @@
       <p class="lede">Enter your yard username and password to open the ERP dashboard.</p>
       <div class="staff-error" id="loginError"></div>
       <div class="field"><label for="loginUser">Username</label><input id="loginUser" autocomplete="username" required /></div>
-      <div class="field"><label for="loginPass">Password</label><input id="loginPass" type="password" autocomplete="current-password" required /></div>
+      <div class="field"><label for="loginPass">Password</label>
+        <div class="pw-field">
+          <input id="loginPass" type="password" autocomplete="current-password" required />
+          <button type="button" class="pw-toggle" id="loginPassToggle" aria-label="Show password" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <g class="pw-eye">
+                <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </g>
+              <path class="pw-eye-off" d="M3 3l18 18" style="display:none"/>
+            </svg>
+          </button>
+        </div>
+      </div>
       <button class="btn btn-block" type="submit" id="loginSubmit">Sign In</button>
       <a href="/" class="back-link">&larr; Back to public catalog</a>
     </form>
@@ -200,6 +213,21 @@
 
 <div class="toast" id="toast"></div>
 
+<script>
+(() => {
+  const toggle = document.getElementById("loginPassToggle");
+  const input = document.getElementById("loginPass");
+  if (!toggle || !input) return;
+  toggle.addEventListener("click", () => {
+    const showing = input.type === "text";
+    input.type = showing ? "password" : "text";
+    toggle.setAttribute("aria-pressed", String(!showing));
+    toggle.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+    toggle.querySelector(".pw-eye").style.display = showing ? "" : "none";
+    toggle.querySelector(".pw-eye-off").style.display = showing ? "none" : "";
+  });
+})();
+</script>
 <script src="js/api.js"></script>
 <script src="js/calc.js"></script>
 <script src="js/admin.js"></script>

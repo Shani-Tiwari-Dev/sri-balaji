@@ -32,9 +32,7 @@
   <nav class="main-nav">
     <a href="/">Catalog</a>
     <a href="/about.html" class="active">About</a>
-    <a href="/staff" class="icon-btn" aria-label="Staff login">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.4-3.8 4.2-5.8 7.5-5.8s6.1 2 7.5 5.8"/></svg>
-    </a>
+    <button class="btn btn-sm" id="enquireBtn" type="button" data-open-enquiry>Enquire</button>
   </nav>
 </header>
 
@@ -69,6 +67,20 @@
   </div>
 </footer>
 
+<!-- General enquiry (independent of the slab-based cart, still lands as a normal query) -->
+<div class="overlay" id="queryOverlay">
+  <div class="modal-wrap">
+    <button class="modal-close" id="closeQueryModal" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0a0a0a" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+    <div class="modal modal-solo" id="queryModalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="js/api.js"></script>
+<script src="js/enquiry.js"></script>
 </body>
 </html>

@@ -363,6 +363,8 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
 }
 .overlay.open .modal { transform: translateY(0); }
 @media (min-width: 760px) { .modal { grid-template-columns: 1.1fr 1fr; } }
+@media (min-width: 760px) { .modal.modal-solo { grid-template-columns: 1fr; } }
+.modal.modal-solo { max-width: 520px; }
 .modal-close {
   position: absolute; top: 14px; right: 14px; z-index: 5;
   background: var(--paper); border: 1.5px solid var(--ink); width: 32px; height: 32px;
@@ -445,6 +447,14 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
 }
 .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { border-color: var(--rust); }
 .field textarea { resize: vertical; min-height: 70px; }
+.pw-field { position: relative; }
+.pw-field input { padding-right: 42px; }
+.pw-toggle {
+  position: absolute; top: 50%; right: 4px; transform: translateY(-50%);
+  background: none; border: none; padding: 7px; border-radius: var(--r-sm);
+  color: var(--ink-soft); display: flex; align-items: center; justify-content: center;
+}
+.pw-toggle:hover { color: var(--ink); background: var(--bg-deep); }
 .form-note { font-size: 11.5px; color: var(--ink-soft); margin-top: 12px; }
 .confirmation { text-align: center; padding: 40px 10px; }
 .confirmation .ok-mark { width: 46px; height: 46px; margin: 0 auto 14px; }
