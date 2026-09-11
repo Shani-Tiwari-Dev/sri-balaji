@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Staff & Admin ERP | Sri Balaji Granites</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        button, a, input, select, textarea { touch-action: manipulation; }
+        .erp-tab { color: #78716c; background-color: #f5f5f4; }
+        .erp-tab:hover { color: #1c1917; background-color: #e7e5e4; }
+        .erp-tab.active-tab { background-color: #d97706; color: #ffffff; box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2); }
+        @media (max-width: 640px) {
+            input, select, textarea { font-size: 16px !important; }
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-900 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Admin Header -->
+    <header class="bg-stone-900 text-white border-b border-stone-800 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center font-black text-base shadow">
+                    SBG
+                </div>
+                <div>
+                    <h1 class="text-sm sm:text-base font-black tracking-tight flex items-center gap-2">
+                        <span>Admin ERP Control Panel</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] uppercase font-bold">Supabase Cloud</span>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="/" class="px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-bold transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-store"></i>
+                    <span>Store View</span>
+                </a>
+                <button id="logout-btn" onclick="handleLogout()" class="hidden px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+        <!-- 1. LOGIN SCREEN -->
+        <div id="login-container" class="max-w-md mx-auto bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-stone-200 space-y-6">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 mx-auto flex items-center justify-center text-2xl shadow-inner">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h2 class="text-xl font-black text-stone-900">Staff & Admin Login</h2>
+                <p class="text-xs text-stone-500 font-medium">Enter credentials to manage Sri Balaji Granites ERP</p>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Username</label>
+                    <input type="text" id="login-username" required placeholder="admin or Shayam" value="admin" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" value="Shayam@123" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-black text-xs shadow-lg transition-transform hover:scale-[1.02]">
+                    Sign In to ERP Dashboard
+                </button>
+            </form>
+
+            <div class="pt-4 border-t border-stone-100 space-y-2">
+                <p class="text-[11px] font-bold text-stone-500 uppercase tracking-wider text-center">Quick Demo Login</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="quickLogin('admin', 'Shayam@123')" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-xs font-bold text-stone-800">
+                        🔑 Super Admin
+                    </button>
+                    <button onclick="quickLogin('manager1', 'Shayam@123')" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-xs font-bold text-stone-800">
+                        🏭 Yard 1 Manager
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. ERP DASHBOARD -->
+        <div id="dashboard-container" class="hidden space-y-6">
+
+            <!-- Welcome Bar -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-stone-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <span id="user-role-badge" class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-black uppercase">Super Admin</span>
+                    <h2 id="user-greeting" class="text-xl font-black text-stone-900 mt-1">Welcome, Shayam</h2>
+                    <p class="text-xs text-stone-500 font-medium">Managing all 3 Sri Balaji Granites & Marble Godowns</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="openAddSlabModal()" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-black shadow flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Add New Slab</span>
+                    </button>
+                    <button onclick="loadAdminData()" class="px-3 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Sync Supabase</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ERP Tabs -->
+            <div class="flex items-center gap-2 overflow-x-auto border-b border-stone-200 pb-2">
+                <button onclick="switchTab('inventory')" id="tab-inventory" class="erp-tab active-tab px-4 py-2 rounded-xl text-xs font-black transition-all">
+                    <i class="fa-solid fa-cubes mr-1.5"></i> Godown Inventory
+                </button>
+                <button onclick="switchTab('enquiries')" id="tab-enquiries" class="erp-tab px-4 py-2 rounded-xl text-xs font-black transition-all">
+                    <i class="fa-solid fa-inbox mr-1.5"></i> Customer Enquiries (<span id="enquiry-count">0</span>)
+                </button>
+                <button onclick="switchTab('calculator')" id="tab-calculator" class="erp-tab px-4 py-2 rounded-xl text-xs font-black transition-all">
+                    <i class="fa-solid fa-calculator mr-1.5"></i> Price Calculator
+                </button>
+            </div>
+
+            <!-- Tab Content: Inventory -->
+            <div id="tab-content-inventory" class="space-y-4">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-stone-200 overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase font-black tracking-wider">
+                            <tr>
+                                <th class="p-3">Slab Title / Block</th>
+                                <th class="p-3">Category</th>
+                                <th class="p-3">Godown</th>
+                                <th class="p-3">Dimensions</th>
+                                <th class="p-3">Total Area</th>
+                                <th class="p-3">Rate / Sq.Ft</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-tbody" class="divide-y divide-stone-100">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content: Customer Enquiries -->
+            <div id="tab-content-enquiries" class="hidden space-y-4">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-stone-200 overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase font-black tracking-wider">
+                            <tr>
+                                <th class="p-3">Order / Client</th>
+                                <th class="p-3">Mobile Number</th>
+                                <th class="p-3">Delivery Location</th>
+                                <th class="p-3">Quantity</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">WhatsApp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enquiries-tbody" class="divide-y divide-stone-100">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content: Price Calculator -->
+            <div id="tab-content-calculator" class="hidden">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-stone-200 max-w-xl space-y-4">
+                    <h3 class="text-base font-black text-stone-900 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-amber-600"></i>
+                        <span>Instant Granite & Marble Rate Estimator</span>
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Length (Feet)</label>
+                            <input type="number" id="calc-length" value="10" oninput="calculateEstimate()" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Width (Feet)</label>
+                            <input type="number" id="calc-width" value="6" oninput="calculateEstimate()" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Number of Slabs</label>
+                            <input type="number" id="calc-pieces" value="40" oninput="calculateEstimate()" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1">Base Price / Sq.Ft (₹)</label>
+                            <input type="number" id="calc-price" value="180" oninput="calculateEstimate()" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm">
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-stone-900 text-white space-y-2">
+                        <div class="flex justify-between text-xs text-stone-300">
+                            <span>Total Area:</span>
+                            <span id="calc-total-area" class="font-bold text-white">2,400 Sq.Ft (222.96 Sq.M)</span>
+                        </div>
+                        <div class="flex justify-between text-sm font-black border-t border-stone-700 pt-2 text-amber-400">
+                            <span>Estimated Material Cost:</span>
+                            <span id="calc-total-cost">₹4,32,000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Modal: Add New Slab -->
+    <div id="add-slab-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-stone-200">
+            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                <h3 class="font-black text-lg text-stone-900">Add Marble / Granite Slab to Supabase</h3>
+                <button onclick="closeAddSlabModal()" class="w-8 h-8 rounded-full bg-stone-100 text-stone-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="add-slab-form" onsubmit="handleAddSlab(event)" class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Slab Title *</label>
+                        <input type="text" id="slab-title" required placeholder="e.g. Ongole Black Galaxy" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Block Number *</label>
+                        <input type="text" id="slab-block" required placeholder="SBG-BLK-109" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-medium">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Category</label>
+                        <select id="slab-category" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-medium">
+                            <option value="Granite">Granite</option>
+                            <option value="Italian Marble">Italian Marble</option>
+                            <option value="Indian Marble">Indian Marble</option>
+                            <option value="Quartz">Quartz</option>
+                            <option value="Onyx">Onyx</option>
+                            <option value="Sandstone">Sandstone</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Godown Allocation</label>
+                        <select id="slab-godown" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-medium">
+                            <option value="godown_1">Godown 1 (Industrial Area Yard)</option>
+                            <option value="godown_2">Godown 2 (Kishangarh Bypass Gallery)</option>
+                            <option value="godown_3">Godown 3 (Makrana Highway Yard)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Length (Feet)</label>
+                        <input type="number" step="0.1" id="slab-length" required value="10" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Width (Feet)</label>
+                        <input type="number" step="0.1" id="slab-width" required value="6" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Total Pieces</label>
+                        <input type="number" id="slab-pieces" required value="40" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Price / Sq.Ft (₹)</label>
+                        <input type="number" id="slab-price" required value="175" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Finish</label>
+                        <select id="slab-finish" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-medium">
+                            <option value="Polished">Polished</option>
+                            <option value="Lappato">Lappato</option>
+                            <option value="Honed">Honed</option>
+                            <option value="Leathered">Leathered</option>
+                            <option value="Flamed">Flamed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Slab Photo</label>
+
+                    <div class="grid grid-cols-3 gap-3 items-center">
+                        <button type="button" onclick="document.getElementById('slab-image-file').click()" class="col-span-2 py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-black shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-images"></i>
+                            <span>Choose Photo from Gallery</span>
+                        </button>
+                        <div id="slab-image-preview-wrap" class="h-14 rounded-xl border border-stone-200 bg-stone-50 overflow-hidden flex items-center justify-center">
+                            <img id="slab-image-preview" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <input type="file" id="slab-image-file" accept="image/*" class="hidden" onchange="handleSlabImageUpload(event)">
+
+                    <input type="url" id="slab-image" value="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" oninput="document.getElementById('slab-image-preview').src = this.value" placeholder="Or paste image URL (https://...)" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-xs font-medium">
+                    <p class="text-[10px] text-stone-500">Upload a photo from your device, or paste an image link above.</p>
+                </div>
+
+                <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" onclick="closeAddSlabModal()" class="px-4 py-2 rounded-xl text-stone-600 text-xs font-bold">Cancel</button>
+                    <button type="submit" class="px-6 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-black shadow">Save Slab to Supabase</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inline JavaScript -->
+    <script>
+        let adminSession = null;
+        let inventoryList = [];
+        let enquiryList = [];
+
+        document.addEventListener('DOMContentLoaded', () => { checkSession(); });
+
+        async function checkSession() {
+            try {
+                const res = await fetch('/api/admin/session');
+                const data = await res.json();
+                if (data.user) { adminSession = data.user; showDashboard(); }
+                else { showLogin(); }
+            } catch (e) { showLogin(); }
+        }
+
+        function showLogin() {
+            document.getElementById('login-container')?.classList.remove('hidden');
+            document.getElementById('dashboard-container')?.classList.add('hidden');
+            document.getElementById('logout-btn')?.classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('login-container')?.classList.add('hidden');
+            document.getElementById('dashboard-container')?.classList.remove('hidden');
+            document.getElementById('logout-btn')?.classList.remove('hidden');
+            document.getElementById('user-greeting').innerText = `Welcome, ${adminSession.name || adminSession.username}`;
+            document.getElementById('user-role-badge').innerText = adminSession.role.toUpperCase();
+            loadAdminData();
+            calculateEstimate();
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            quickLogin(document.getElementById('login-username').value, document.getElementById('login-password').value);
+        }
+
+        async function quickLogin(u, p) {
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: u, password: p})
+                });
+                const data = await res.json();
+                if (res.ok && data.status === 'success') {
+                    adminSession = data.user;
+                    showDashboard();
+                } else {
+                    alert('❌ ' + (data.message || 'Invalid Login Credentials'));
+                }
+            } catch (e) { alert('Network error during login'); }
+        }
+
+        async function handleLogout() {
+            await fetch('/api/admin/logout', {method: 'POST'});
+            adminSession = null;
+            showLogin();
+        }
+
+        async function loadAdminData() {
+            try {
+                const sRes = await fetch('/api/slabs');
+                inventoryList = await sRes.json();
+                renderInventoryTable(inventoryList);
+
+                const qRes = await fetch('/api/admin/queries');
+                enquiryList = await qRes.json();
+                renderEnquiriesTable(enquiryList);
+                document.getElementById('enquiry-count').innerText = enquiryList.length;
+            } catch (e) {}
+        }
+
+        function renderInventoryTable(list) {
+            const tbody = document.getElementById('inventory-tbody');
+            if (!tbody) return;
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-stone-400">No slabs found in Supabase.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = list.map(s => `
+                <tr class="hover:bg-stone-50">
+                    <td class="p-3 font-bold text-stone-900">
+                        <div class="flex items-center gap-2">
+                            <img src="${s.image_url}" class="w-8 h-8 rounded-lg object-cover">
+                            <div><div>${s.title}</div><div class="text-[10px] font-mono text-stone-500">${s.block_number}</div></div>
+                        </div>
+                    </td>
+                    <td class="p-3 text-stone-600 font-semibold">${s.category}</td>
+                    <td class="p-3 text-stone-600">${s.godown_name || s.godown_id}</td>
+                    <td class="p-3 text-stone-700">${s.length}' × ${s.width}' (${s.thickness_mm}mm)</td>
+                    <td class="p-3 font-bold text-amber-700">${s.total_sq_ft} Sq.Ft</td>
+                    <td class="p-3 font-black text-stone-900">₹${s.price_per_sq_ft}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-full ${s.is_sold ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'} text-[10px] font-black">${s.is_sold ? 'SOLD' : 'AVAILABLE'}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteSlab('${s.id}')" class="px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold" title="7-Day Recycle Bin"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderEnquiriesTable(list) {
+            const tbody = document.getElementById('enquiries-tbody');
+            if (!tbody) return;
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-stone-400">No customer enquiries registered yet.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = list.map(q => `
+                <tr class="hover:bg-stone-50">
+                    <td class="p-3 font-bold text-stone-900"><div>${q.client_name}</div><div class="text-[10px] font-mono text-stone-400">${q.order_number || 'ENQ-NEW'}</div></td>
+                    <td class="p-3 font-mono font-semibold text-stone-700">${q.mobile_number}</td>
+                    <td class="p-3 text-stone-600">${q.delivery_address || 'Not specified'}</td>
+                    <td class="p-3 font-bold text-stone-800">${q.requested_quantity_sq_ft || 0} ${q.dimension_unit}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">${q.status || 'Pending'}</span></td>
+                    <td class="p-3 text-right">
+                        <a href="https://wa.me/91${q.mobile_number.replace(/[^0-9]/g, '')}" target="_blank" class="px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-bold inline-flex items-center gap-1"><i class="fa-brands fa-whatsapp"></i> Chat</a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openAddSlabModal() { document.getElementById('add-slab-modal')?.classList.remove('hidden'); }
+        function closeAddSlabModal() { document.getElementById('add-slab-modal')?.classList.add('hidden'); }
+
+        function handleSlabImageUpload(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('Please choose an image file.');
+                return;
+            }
+            if (file.size > 4 * 1024 * 1024) {
+                alert('Image is too large. Please choose a photo under 4MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result === 'string') {
+                    document.getElementById('slab-image').value = reader.result;
+                    document.getElementById('slab-image-preview').src = reader.result;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleAddSlab(e) {
+            e.preventDefault();
+            const godownSelect = document.getElementById('slab-godown');
+            const data = {
+                title: document.getElementById('slab-title').value,
+                block_number: document.getElementById('slab-block').value,
+                category: document.getElementById('slab-category').value,
+                godown_id: godownSelect.value,
+                godown_name: godownSelect.options[godownSelect.selectedIndex].text,
+                length: parseFloat(document.getElementById('slab-length').value),
+                width: parseFloat(document.getElementById('slab-width').value),
+                unit: 'feet',
+                pieces: parseInt(document.getElementById('slab-pieces').value),
+                price_per_sq_ft: parseFloat(document.getElementById('slab-price').value),
+                finish: document.getElementById('slab-finish').value,
+                image_url: document.getElementById('slab-image').value
+            };
+
+            const res = await fetch('/api/admin/slabs', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert('✅ New Slab added successfully to Supabase Database!');
+                closeAddSlabModal();
+                loadAdminData();
+            }
+        }
+
+        async function deleteSlab(id) {
+            if (!confirm('Move slab to 7-Day Recycle Bin?')) return;
+            const res = await fetch(`/api/admin/slabs/${id}`, {method: 'DELETE'});
+            if (res.ok) { alert('✅ Slab moved to 7-Day Recycle Bin.'); loadAdminData(); }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.erp-tab').forEach(b => b.classList.remove('active-tab'));
+            document.getElementById(`tab-${tab}`)?.classList.add('active-tab');
+            document.getElementById('tab-content-inventory').classList.add('hidden');
+            document.getElementById('tab-content-enquiries').classList.add('hidden');
+            document.getElementById('tab-content-calculator').classList.add('hidden');
+            document.getElementById(`tab-content-${tab}`)?.classList.remove('hidden');
+        }
+
+        function calculateEstimate() {
+            const l = parseFloat(document.getElementById('calc-length')?.value || 0);
+            const w = parseFloat(document.getElementById('calc-width')?.value || 0);
+            const p = parseInt(document.getElementById('calc-pieces')?.value || 0);
+            const rate = parseFloat(document.getElementById('calc-price')?.value || 0);
+            const totalSqFt = l * w * p;
+            const totalSqM = (totalSqFt * 0.092903).toFixed(2);
+            const totalCost = totalSqFt * rate;
+            const areaElem = document.getElementById('calc-total-area');
+            const costElem = document.getElementById('calc-total-cost');
+            if (areaElem) areaElem.innerText = `${totalSqFt.toLocaleString()} Sq.Ft (${totalSqM} Sq.M)`;
+            if (costElem) costElem.innerText = `₹${totalCost.toLocaleString('en-IN')}`;
+        }
+    </script>
+</body>
+</html>

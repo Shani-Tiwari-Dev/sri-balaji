@@ -1,0 +1,985 @@
+@import "tailwindcss";
+
+html, body, #root {
+  max-width: 100vw;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  h1, h2, h3, h4, .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+.font-sans-body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* =========================================================
+   1. CARRARA MARBLE (Luminous Ivory & Champagne Gold)
+   ========================================================= */
+.theme-carrara {
+  background-color: #faf8f5 !important;
+  color: #1c1917 !important;
+}
+
+.theme-carrara .bg-stone-50,
+.theme-carrara .bg-stone-100 {
+  background-color: #f5efe6 !important;
+}
+
+.theme-carrara .bg-white {
+  background-color: #ffffff !important;
+  border-color: #e7e2d7 !important;
+}
+
+.theme-carrara .border-stone-200,
+.theme-carrara .border-stone-300 {
+  border-color: #e7e2d7 !important;
+}
+
+.theme-carrara .text-stone-900,
+.theme-carrara .text-stone-800 {
+  color: #1c1917 !important;
+}
+
+.theme-carrara .text-stone-700,
+.theme-carrara .text-stone-600 {
+  color: #44403c !important;
+}
+
+.theme-carrara .text-stone-500,
+.theme-carrara .text-stone-400 {
+  color: #78716c !important;
+}
+
+.theme-carrara .bg-blue-600,
+.theme-carrara .bg-amber-600 {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+
+.theme-carrara .text-blue-600,
+.theme-carrara .text-amber-700,
+.theme-carrara .text-amber-800 {
+  color: #b45309 !important;
+}
+
+.theme-carrara .gold-gradient-text {
+  background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #78350f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   2. FLIPKART RETAIL (Vibrant Corporate Blue & Yellow)
+   ========================================================= */
+.theme-flipkart {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.theme-flipkart .bg-stone-50,
+.theme-flipkart .bg-stone-100 {
+  background-color: #e2e8f0 !important;
+}
+
+.theme-flipkart .bg-white {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-flipkart .border-stone-200,
+.theme-flipkart .border-stone-300 {
+  border-color: #cbd5e1 !important;
+}
+
+.theme-flipkart .text-stone-900,
+.theme-flipkart .text-stone-800 {
+  color: #0f172a !important;
+}
+
+.theme-flipkart .text-stone-700,
+.theme-flipkart .text-stone-600 {
+  color: #334155 !important;
+}
+
+.theme-flipkart .text-stone-500,
+.theme-flipkart .text-stone-400 {
+  color: #64748b !important;
+}
+
+.theme-flipkart .bg-blue-600,
+.theme-flipkart .bg-amber-600 {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.theme-flipkart .text-blue-600,
+.theme-flipkart .text-amber-700,
+.theme-flipkart .text-amber-800 {
+  color: #1d4ed8 !important;
+}
+
+.theme-flipkart .gold-gradient-text {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   3. MINT EMERALD (Crisp Mint Jade Light)
+   ========================================================= */
+.theme-emerald {
+  background-color: #f0fdf4 !important;
+  color: #064e3b !important;
+}
+
+.theme-emerald .bg-stone-50,
+.theme-emerald .bg-stone-100 {
+  background-color: #dcfce7 !important;
+}
+
+.theme-emerald .bg-white {
+  background-color: #ffffff !important;
+  border-color: #a7f3d0 !important;
+}
+
+.theme-emerald .border-stone-200,
+.theme-emerald .border-stone-300 {
+  border-color: #a7f3d0 !important;
+}
+
+.theme-emerald .text-stone-900,
+.theme-emerald .text-stone-800 {
+  color: #064e3b !important;
+}
+
+.theme-emerald .text-stone-700,
+.theme-emerald .text-stone-600 {
+  color: #065f46 !important;
+}
+
+.theme-emerald .text-stone-500,
+.theme-emerald .text-stone-400 {
+  color: #047857 !important;
+}
+
+.theme-emerald .bg-blue-600,
+.theme-emerald .bg-amber-600 {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+.theme-emerald .text-blue-600,
+.theme-emerald .text-amber-700,
+.theme-emerald .text-amber-800 {
+  color: #047857 !important;
+}
+
+.theme-emerald .gold-gradient-text {
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   4. ROYAL ROSE GOLD (Pearl Rose & Blush Coral Light)
+   ========================================================= */
+.theme-rosegold {
+  background-color: #fff1f2 !important;
+  color: #4c0519 !important;
+}
+
+.theme-rosegold .bg-stone-50,
+.theme-rosegold .bg-stone-100 {
+  background-color: #ffe4e6 !important;
+}
+
+.theme-rosegold .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fecdd3 !important;
+}
+
+.theme-rosegold .border-stone-200,
+.theme-rosegold .border-stone-300 {
+  border-color: #fecdd3 !important;
+}
+
+.theme-rosegold .text-stone-900,
+.theme-rosegold .text-stone-800 {
+  color: #4c0519 !important;
+}
+
+.theme-rosegold .text-stone-700,
+.theme-rosegold .text-stone-600 {
+  color: #881337 !important;
+}
+
+.theme-rosegold .text-stone-500,
+.theme-rosegold .text-stone-400 {
+  color: #9f1239 !important;
+}
+
+.theme-rosegold .bg-blue-600,
+.theme-rosegold .bg-amber-600 {
+  background-color: #e11d48 !important;
+  color: #ffffff !important;
+}
+
+.theme-rosegold .text-blue-600,
+.theme-rosegold .text-amber-700,
+.theme-rosegold .text-amber-800 {
+  color: #be123c !important;
+}
+
+.theme-rosegold .gold-gradient-text {
+  background: linear-gradient(135deg, #be123c 0%, #e11d48 50%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   5. ROYAL AMETHYST (Lavender Pearl & Violet Light)
+   ========================================================= */
+.theme-amethyst {
+  background-color: #faf5ff !important;
+  color: #3b0764 !important;
+}
+
+.theme-amethyst .bg-stone-50,
+.theme-amethyst .bg-stone-100 {
+  background-color: #f3e8ff !important;
+}
+
+.theme-amethyst .bg-white {
+  background-color: #ffffff !important;
+  border-color: #e9d5ff !important;
+}
+
+.theme-amethyst .border-stone-200,
+.theme-amethyst .border-stone-300 {
+  border-color: #e9d5ff !important;
+}
+
+.theme-amethyst .text-stone-900,
+.theme-amethyst .text-stone-800 {
+  color: #3b0764 !important;
+}
+
+.theme-amethyst .text-stone-700,
+.theme-amethyst .text-stone-600 {
+  color: #581c87 !important;
+}
+
+.theme-amethyst .text-stone-500,
+.theme-amethyst .text-stone-400 {
+  color: #7e22ce !important;
+}
+
+.theme-amethyst .bg-blue-600,
+.theme-amethyst .bg-amber-600 {
+  background-color: #9333ea !important;
+  color: #ffffff !important;
+}
+
+.theme-amethyst .text-blue-600,
+.theme-amethyst .text-amber-700,
+.theme-amethyst .text-amber-800 {
+  color: #7e22ce !important;
+}
+
+.theme-amethyst .gold-gradient-text {
+  background: linear-gradient(135deg, #7e22ce 0%, #9333ea 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   6. TUSCAN SUNSET (Warm Coral & Peach Glow Light)
+   ========================================================= */
+.theme-sunset {
+  background-color: #fff7ed !important;
+  color: #431407 !important;
+}
+
+.theme-sunset .bg-stone-50,
+.theme-sunset .bg-stone-100 {
+  background-color: #ffedd5 !important;
+}
+
+.theme-sunset .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fed7aa !important;
+}
+
+.theme-sunset .border-stone-200,
+.theme-sunset .border-stone-300 {
+  border-color: #fed7aa !important;
+}
+
+.theme-sunset .text-stone-900,
+.theme-sunset .text-stone-800 {
+  color: #431407 !important;
+}
+
+.theme-sunset .text-stone-700,
+.theme-sunset .text-stone-600 {
+  color: #7c2d12 !important;
+}
+
+.theme-sunset .text-stone-500,
+.theme-sunset .text-stone-400 {
+  color: #c2410c !important;
+}
+
+.theme-sunset .bg-blue-600,
+.theme-sunset .bg-amber-600 {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+}
+
+.theme-sunset .text-blue-600,
+.theme-sunset .text-amber-700,
+.theme-sunset .text-amber-800 {
+  color: #c2410c !important;
+}
+
+.theme-sunset .gold-gradient-text {
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   7. TURQUOISE OCEAN (Azure Coastal Breeze Light)
+   ========================================================= */
+.theme-ocean {
+  background-color: #f0fdfa !important;
+  color: #042f2e !important;
+}
+
+.theme-ocean .bg-stone-50,
+.theme-ocean .bg-stone-100 {
+  background-color: #ccfbf1 !important;
+}
+
+.theme-ocean .bg-white {
+  background-color: #ffffff !important;
+  border-color: #99f6e4 !important;
+}
+
+.theme-ocean .border-stone-200,
+.theme-ocean .border-stone-300 {
+  border-color: #99f6e4 !important;
+}
+
+.theme-ocean .text-stone-900,
+.theme-ocean .text-stone-800 {
+  color: #042f2e !important;
+}
+
+.theme-ocean .text-stone-700,
+.theme-ocean .text-stone-600 {
+  color: #115e59 !important;
+}
+
+.theme-ocean .text-stone-500,
+.theme-ocean .text-stone-400 {
+  color: #0f766e !important;
+}
+
+.theme-ocean .bg-blue-600,
+.theme-ocean .bg-amber-600 {
+  background-color: #0d9488 !important;
+  color: #ffffff !important;
+}
+
+.theme-ocean .text-blue-600,
+.theme-ocean .text-amber-700,
+.theme-ocean .text-amber-800 {
+  color: #0f766e !important;
+}
+
+.theme-ocean .gold-gradient-text {
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   8. IMPERIAL CHAMPAGNE (Golden Ivory Light)
+   ========================================================= */
+.theme-champagne {
+  background-color: #fefce8 !important;
+  color: #422006 !important;
+}
+
+.theme-champagne .bg-stone-50,
+.theme-champagne .bg-stone-100 {
+  background-color: #fef9c3 !important;
+}
+
+.theme-champagne .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fef08a !important;
+}
+
+.theme-champagne .border-stone-200,
+.theme-champagne .border-stone-300 {
+  border-color: #fef08a !important;
+}
+
+.theme-champagne .text-stone-900,
+.theme-champagne .text-stone-800 {
+  color: #422006 !important;
+}
+
+.theme-champagne .text-stone-700,
+.theme-champagne .text-stone-600 {
+  color: #713f12 !important;
+}
+
+.theme-champagne .text-stone-500,
+.theme-champagne .text-stone-400 {
+  color: #a16207 !important;
+}
+
+.theme-champagne .bg-blue-600,
+.theme-champagne .bg-amber-600 {
+  background-color: #ca8a04 !important;
+  color: #ffffff !important;
+}
+
+.theme-champagne .text-blue-600,
+.theme-champagne .text-amber-700,
+.theme-champagne .text-amber-800 {
+  color: #a16207 !important;
+}
+
+.theme-champagne .gold-gradient-text {
+  background: linear-gradient(135deg, #a16207 0%, #ca8a04 50%, #eab308 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   9. JAQUAR CHROME SLATE (Steel Light)
+   ========================================================= */
+.theme-jaquar {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+.theme-jaquar .bg-stone-50,
+.theme-jaquar .bg-stone-100 {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-jaquar .bg-white {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-jaquar .border-stone-200,
+.theme-jaquar .border-stone-300 {
+  border-color: #cbd5e1 !important;
+}
+
+.theme-jaquar .text-stone-900,
+.theme-jaquar .text-stone-800 {
+  color: #0f172a !important;
+}
+
+.theme-jaquar .text-stone-700,
+.theme-jaquar .text-stone-600 {
+  color: #334155 !important;
+}
+
+.theme-jaquar .text-stone-500,
+.theme-jaquar .text-stone-400 {
+  color: #64748b !important;
+}
+
+.theme-jaquar .bg-blue-600,
+.theme-jaquar .bg-amber-600 {
+  background-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+.theme-jaquar .text-blue-600,
+.theme-jaquar .text-amber-700,
+.theme-jaquar .text-amber-800 {
+  color: #1e293b !important;
+}
+
+.theme-jaquar .gold-gradient-text {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   10. OBSIDIAN PLATINUM (Metallic Silver Light)
+   ========================================================= */
+.theme-obsidian {
+  background-color: #f4f4f5 !important;
+  color: #09090b !important;
+}
+
+.theme-obsidian .bg-stone-50,
+.theme-obsidian .bg-stone-100 {
+  background-color: #e4e4e7 !important;
+}
+
+.theme-obsidian .bg-white {
+  background-color: #ffffff !important;
+  border-color: #d4d4d8 !important;
+}
+
+.theme-obsidian .border-stone-200,
+.theme-obsidian .border-stone-300 {
+  border-color: #d4d4d8 !important;
+}
+
+.theme-obsidian .text-stone-900,
+.theme-obsidian .text-stone-800 {
+  color: #09090b !important;
+}
+
+.theme-obsidian .text-stone-700,
+.theme-obsidian .text-stone-600 {
+  color: #27272a !important;
+}
+
+.theme-obsidian .text-stone-500,
+.theme-obsidian .text-stone-400 {
+  color: #71717a !important;
+}
+
+.theme-obsidian .bg-blue-600,
+.theme-obsidian .bg-amber-600 {
+  background-color: #27272a !important;
+  color: #ffffff !important;
+}
+
+.theme-obsidian .text-blue-600,
+.theme-obsidian .text-amber-700,
+.theme-obsidian .text-amber-800 {
+  color: #18181b !important;
+}
+
+.theme-obsidian .gold-gradient-text {
+  background: linear-gradient(135deg, #18181b 0%, #27272a 50%, #52525b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================================================
+   9. ALASKA WHITE (Frost Silver & Sky Blue)
+   ========================================================= */
+.theme-alaska {
+  background-color: #f0f9ff !important;
+  color: #0c4a6e !important;
+}
+
+.theme-alaska .bg-stone-50,
+.theme-alaska .bg-stone-100 {
+  background-color: #e0f2fe !important;
+}
+
+.theme-alaska .bg-white {
+  background-color: #ffffff !important;
+  border-color: #bae6fd !important;
+}
+
+.theme-alaska .border-stone-200,
+.theme-alaska .border-stone-300 {
+  border-color: #bae6fd !important;
+}
+
+.theme-alaska .text-stone-900,
+.theme-alaska .text-stone-800 {
+  color: #0c4a6e !important;
+}
+
+.theme-alaska .text-stone-700,
+.theme-alaska .text-stone-600 {
+  color: #0369a1 !important;
+}
+
+.theme-alaska .bg-blue-600,
+.theme-alaska .bg-amber-600 {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+.theme-alaska .text-blue-600,
+.theme-alaska .text-amber-700 {
+  color: #0284c7 !important;
+}
+
+
+/* =========================================================
+   10. CREMA MARFIL (Warm Spanish Cream)
+   ========================================================= */
+.theme-crema {
+  background-color: #fdfbf7 !important;
+  color: #451a03 !important;
+}
+
+.theme-crema .bg-stone-50,
+.theme-crema .bg-stone-100 {
+  background-color: #f5efe6 !important;
+}
+
+.theme-crema .bg-white {
+  background-color: #ffffff !important;
+  border-color: #e7dfd3 !important;
+}
+
+.theme-crema .border-stone-200,
+.theme-crema .border-stone-300 {
+  border-color: #e7dfd3 !important;
+}
+
+.theme-crema .text-stone-900,
+.theme-crema .text-stone-800 {
+  color: #451a03 !important;
+}
+
+.theme-crema .text-stone-700,
+.theme-crema .text-stone-600 {
+  color: #78350f !important;
+}
+
+.theme-crema .bg-blue-600,
+.theme-crema .bg-amber-600 {
+  background-color: #b45309 !important;
+  color: #ffffff !important;
+}
+
+.theme-crema .text-blue-600,
+.theme-crema .text-amber-700 {
+  color: #b45309 !important;
+}
+
+
+/* =========================================================
+   11. VERDE GUATEMALA (Lush Emerald Forest Green)
+   ========================================================= */
+.theme-verdeguatemala {
+  background-color: #f0fdf4 !important;
+  color: #14532d !important;
+}
+
+.theme-verdeguatemala .bg-stone-50,
+.theme-verdeguatemala .bg-stone-100 {
+  background-color: #dcfce7 !important;
+}
+
+.theme-verdeguatemala .bg-white {
+  background-color: #ffffff !important;
+  border-color: #bbf7d0 !important;
+}
+
+.theme-verdeguatemala .border-stone-200,
+.theme-verdeguatemala .border-stone-300 {
+  border-color: #bbf7d0 !important;
+}
+
+.theme-verdeguatemala .text-stone-900,
+.theme-verdeguatemala .text-stone-800 {
+  color: #14532d !important;
+}
+
+.theme-verdeguatemala .text-stone-700,
+.theme-verdeguatemala .text-stone-600 {
+  color: #166534 !important;
+}
+
+.theme-verdeguatemala .bg-blue-600,
+.theme-verdeguatemala .bg-amber-600 {
+  background-color: #15803d !important;
+  color: #ffffff !important;
+}
+
+.theme-verdeguatemala .text-blue-600,
+.theme-verdeguatemala .text-amber-700 {
+  color: #15803d !important;
+}
+
+/* =========================================================
+   5 DISTINCT HIGH-CONTRAST COLOR THEMES
+   ========================================================= */
+
+/* 1. ROYAL AMBER GOLD (Warm Gold & Cream) */
+.theme-amber, .theme-amber.bg-stone-100, .theme-amber.bg-stone-50, .theme-amber .bg-stone-50, .theme-amber .bg-stone-100 {
+  background-color: #fefce8 !important;
+  color: #713f12 !important;
+}
+.theme-amber .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fef08a !important;
+}
+.theme-amber .border-stone-100, .theme-amber .border-stone-200, .theme-amber .border-stone-300 {
+  border-color: #fef08a !important;
+}
+.theme-amber .bg-amber-600, .theme-amber .bg-blue-600 {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+.theme-amber .text-amber-700, .theme-amber .text-blue-600 {
+  color: #d97706 !important;
+}
+
+/* 2. SAPPHIRE OCEAN BLUE (Cool Sky & Deep Ocean) */
+.theme-sapphire, .theme-sapphire.bg-stone-100, .theme-sapphire.bg-stone-50, .theme-sapphire .bg-stone-50, .theme-sapphire .bg-stone-100 {
+  background-color: #f0f9ff !important;
+  color: #0c4a6e !important;
+}
+.theme-sapphire .bg-white {
+  background-color: #ffffff !important;
+  border-color: #bae6fd !important;
+}
+.theme-sapphire .border-stone-100, .theme-sapphire .border-stone-200, .theme-sapphire .border-stone-300 {
+  border-color: #bae6fd !important;
+}
+.theme-sapphire .bg-amber-600, .theme-sapphire .bg-blue-600 {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+.theme-sapphire .text-amber-700, .theme-sapphire .text-blue-600 {
+  color: #2563eb !important;
+}
+
+/* 3. EMERALD FOREST GREEN (Lush Mint & Emerald) */
+.theme-emerald, .theme-emerald.bg-stone-100, .theme-emerald.bg-stone-50, .theme-emerald .bg-stone-50, .theme-emerald .bg-stone-100 {
+  background-color: #f0fdf4 !important;
+  color: #14532d !important;
+}
+.theme-emerald .bg-white {
+  background-color: #ffffff !important;
+  border-color: #bbf7d0 !important;
+}
+.theme-emerald .border-stone-100, .theme-emerald .border-stone-200, .theme-emerald .border-stone-300 {
+  border-color: #bbf7d0 !important;
+}
+.theme-emerald .bg-amber-600, .theme-emerald .bg-blue-600 {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+.theme-emerald .text-amber-700, .theme-emerald .text-blue-600 {
+  color: #16a34a !important;
+}
+
+/* 4. RUBY ROSE PINK (Nordic Rose & Crimson) */
+.theme-rose, .theme-rose.bg-stone-100, .theme-rose.bg-stone-50, .theme-rose .bg-stone-50, .theme-rose .bg-stone-100 {
+  background-color: #fff1f2 !important;
+  color: #881337 !important;
+}
+.theme-rose .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fecdd3 !important;
+}
+.theme-rose .border-stone-100, .theme-rose .border-stone-200, .theme-rose .border-stone-300 {
+  border-color: #fecdd3 !important;
+}
+.theme-rose .bg-amber-600, .theme-rose .bg-blue-600 {
+  background-color: #e11d48 !important;
+  color: #ffffff !important;
+}
+.theme-rose .text-amber-700, .theme-rose .text-blue-600 {
+  color: #e11d48 !important;
+}
+
+/* 5. OBSIDIAN STEALTH (Polished Dark Onyx Mode) */
+.theme-obsidian, .theme-obsidian.bg-stone-100, .theme-obsidian.bg-stone-50, .theme-obsidian .bg-stone-50, .theme-obsidian .bg-stone-100 {
+  background-color: #09090b !important;
+  color: #fafafa !important;
+}
+.theme-obsidian .bg-white {
+  background-color: #18181b !important;
+  color: #fafafa !important;
+  border-color: #27272a !important;
+}
+.theme-obsidian .border-stone-100, .theme-obsidian .border-stone-200, .theme-obsidian .border-stone-300 {
+  border-color: #27272a !important;
+}
+.theme-obsidian .text-stone-900, .theme-obsidian .text-stone-800, .theme-obsidian .text-stone-700 {
+  color: #fafafa !important;
+}
+.theme-obsidian .text-stone-600, .theme-obsidian .text-stone-500 {
+  color: #a1a1aa !important;
+}
+.theme-obsidian .bg-amber-600, .theme-obsidian .bg-blue-600 {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+.theme-obsidian .text-amber-700, .theme-obsidian .text-blue-600 {
+  color: #f59e0b !important;
+}
+
+/* 6. AMETHYST ROYAL PURPLE (Lavender & Violet) */
+.theme-amethyst, .theme-amethyst.bg-stone-100, .theme-amethyst.bg-stone-50, .theme-amethyst .bg-stone-50, .theme-amethyst .bg-stone-100 {
+  background-color: #faf5ff !important;
+  color: #581c87 !important;
+}
+.theme-amethyst .bg-white {
+  background-color: #ffffff !important;
+  border-color: #e9d5ff !important;
+}
+.theme-amethyst .border-stone-100, .theme-amethyst .border-stone-200, .theme-amethyst .border-stone-300 {
+  border-color: #e9d5ff !important;
+}
+.theme-amethyst .bg-amber-600, .theme-amethyst .bg-blue-600 {
+  background-color: #9333ea !important;
+  color: #ffffff !important;
+}
+.theme-amethyst .text-amber-700, .theme-amethyst .text-blue-600 {
+  color: #9333ea !important;
+}
+
+/* 7. COPPER SANDSTONE (Terracotta & Warm Copper) */
+.theme-copper, .theme-copper.bg-stone-100, .theme-copper.bg-stone-50, .theme-copper .bg-stone-50, .theme-copper .bg-stone-100 {
+  background-color: #fff7ed !important;
+  color: #7c2d12 !important;
+}
+.theme-copper .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fed7aa !important;
+}
+.theme-copper .border-stone-100, .theme-copper .border-stone-200, .theme-copper .border-stone-300 {
+  border-color: #fed7aa !important;
+}
+.theme-copper .bg-amber-600, .theme-copper .bg-blue-600 {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+}
+.theme-copper .text-amber-700, .theme-copper .text-blue-600 {
+  color: #ea580c !important;
+}
+
+/* 8. CYAN AMAZONITE GEM (Turquoise & Mint) */
+.theme-cyan, .theme-cyan.bg-stone-100, .theme-cyan.bg-stone-50, .theme-cyan .bg-stone-50, .theme-cyan .bg-stone-100 {
+  background-color: #ecfeff !important;
+  color: #164e63 !important;
+}
+.theme-cyan .bg-white {
+  background-color: #ffffff !important;
+  border-color: #a5f3fc !important;
+}
+.theme-cyan .border-stone-100, .theme-cyan .border-stone-200, .theme-cyan .border-stone-300 {
+  border-color: #a5f3fc !important;
+}
+.theme-cyan .bg-amber-600, .theme-cyan .bg-blue-600 {
+  background-color: #0891b2 !important;
+  color: #ffffff !important;
+}
+.theme-cyan .text-amber-700, .theme-cyan .text-blue-600 {
+  color: #0891b2 !important;
+}
+
+/* 9. SLATE SILVER QUARTZ (Cool Silver Slate) */
+.theme-slate, .theme-slate.bg-stone-100, .theme-slate.bg-stone-50, .theme-slate .bg-stone-50, .theme-slate .bg-stone-100 {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+.theme-slate .bg-white {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+.theme-slate .border-stone-100, .theme-slate .border-stone-200, .theme-slate .border-stone-300 {
+  border-color: #cbd5e1 !important;
+}
+.theme-slate .bg-amber-600, .theme-slate .bg-blue-600 {
+  background-color: #475569 !important;
+  color: #ffffff !important;
+}
+.theme-slate .text-amber-700, .theme-slate .text-blue-600 {
+  color: #475569 !important;
+}
+
+/* 10. TUSCAN SUNSET CORAL (Sunset Gold & Peach) */
+.theme-sunset, .theme-sunset.bg-stone-100, .theme-sunset.bg-stone-50, .theme-sunset .bg-stone-50, .theme-sunset .bg-stone-100 {
+  background-color: #fffbe3 !important;
+  color: #78350f !important;
+}
+.theme-sunset .bg-white {
+  background-color: #ffffff !important;
+  border-color: #fde68a !important;
+}
+.theme-sunset .border-stone-100, .theme-sunset .border-stone-200, .theme-sunset .border-stone-300 {
+  border-color: #fde68a !important;
+}
+.theme-sunset .bg-amber-600, .theme-sunset .bg-blue-600 {
+  background-color: #c2410c !important;
+  color: #ffffff !important;
+}
+.theme-sunset .text-amber-700, .theme-sunset .text-blue-600 {
+  color: #c2410c !important;
+}
+
+
+/* General Input & Table Styling across themes */
+[class*="theme-"] input,
+[class*="theme-"] select,
+[class*="theme-"] textarea {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+
+[class*="theme-"] input::placeholder,
+[class*="theme-"] textarea::placeholder {
+  color: #a1a1aa !important;
+}
+
+[class*="theme-"] option {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+
+[class*="theme-"] table {
+  background-color: #ffffff !important;
+}
+
+/* Mobile & All-Device Touch Optimizations */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS Safari auto-zoom on focus */
+  }
+}
+

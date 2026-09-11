@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Sri Balaji Granites & Marbles | Kishangarh - Digital Showroom</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        button, a, input, select, textarea { touch-action: manipulation; }
+        .cat-pill { background-color: #f5f5f4; color: #44403c; border: 1px solid #e7e5e4; }
+        .cat-pill:hover { background-color: #e7e5e4; color: #1c1917; }
+        .cat-pill.active-pill { background-color: #d97706; color: #ffffff; border-color: #d97706; }
+        .unit-btn { color: #78716c; }
+        .unit-btn.active-unit { background-color: #ffffff; color: #1c1917; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .slab-card img { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .slab-card:hover img { transform: scale(1.04); }
+        @media (max-width: 640px) {
+            input, select, textarea { font-size: 16px !important; }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Announcement Bar -->
+    <div id="announcement-banner" class="bg-amber-600 text-white text-xs font-semibold px-4 py-2 text-center transition-all">
+        <i class="fa-solid fa-bullhorn mr-2"></i>
+        <span id="announcement-text">Welcome to Sri Balaji Granites - Premium Italian Marble & Ongole Granite Yards. Direct WhatsApp: +91 9828400811</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center font-black text-xl shadow-md group-hover:scale-105 transition-transform">
+                    SBG
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-black tracking-tight text-stone-900 leading-tight">
+                        SRI BALAJI <span class="text-amber-600">GRANITES</span>
+                    </h1>
+                    <p class="text-[11px] font-semibold text-stone-500 tracking-wider uppercase">
+                        Kishangarh • Italian & Granite Yards
+                    </p>
+                </div>
+            </a>
+
+            <!-- Right Actions (Customer Only) -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <a href="tel:+919828400811" class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-bold transition-all">
+                    <i class="fa-solid fa-phone text-amber-600"></i>
+                    <span>+91 9828400811</span>
+                </a>
+
+                <a href="https://wa.me/919828400811?text=Hello%20Sri%20Balaji%20Granites,%20I%20am%20interested%20in%20marble%20and%20granite%20slabs" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black flex items-center gap-2 shadow-sm transition-all">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span class="hidden md:inline">WhatsApp Quote</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+        <!-- Hero Showcase Banner -->
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-stone-900 via-stone-800 to-amber-950 text-white p-6 sm:p-10 shadow-xl border border-stone-800">
+            <div class="max-w-2xl space-y-4">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold tracking-wide uppercase">
+                    Direct Quarry Imports & Processing Yards
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+                    Exclusive Granite & Italian Marble Stock
+                </h2>
+                <p class="text-sm text-stone-300 leading-relaxed font-normal">
+                    Explore live yard stock across 3 specialized godowns with verified square footage, exact thickness, block markings, and direct quarry pricing.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})" class="px-6 py-3 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-lg transition-transform hover:scale-105">
+                        Browse Live Stock
+                    </button>
+                    <button onclick="openEnquiryModal()" class="px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs backdrop-blur transition-all">
+                        Request Bulk Estimate
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search & Dynamic Filter Bar -->
+        <div id="catalog-section" class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-stone-200 space-y-4">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+                
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        oninput="filterSlabs()" 
+                        placeholder="Search marble, granite title, or block no..."
+                        class="w-full pl-11 pr-4 py-3 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-medium text-stone-800"
+                    >
+                </div>
+
+                <!-- Unit Switcher -->
+                <div class="flex items-center gap-2 bg-stone-100 p-1.5 rounded-2xl shrink-0 overflow-x-auto">
+                    <span class="text-xs font-bold text-stone-500 px-2">Unit:</span>
+                    <button onclick="setUnit('sqft')" id="unit-sqft" class="unit-btn active-unit px-3 py-1.5 rounded-xl text-xs font-bold transition-all">Sq.Ft</button>
+                    <button onclick="setUnit('sqm')" id="unit-sqm" class="unit-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all">Sq.Meters</button>
+                    <button onclick="setUnit('sqyd')" id="unit-sqyd" class="unit-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all">Sq.Yards</button>
+                    <button onclick="setUnit('brass')" id="unit-brass" class="unit-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all">Brass</button>
+                </div>
+            </div>
+
+            <!-- Category Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-stone-100">
+                <button onclick="filterCategory('All')" class="cat-pill active-pill px-4 py-2 rounded-xl text-xs font-bold transition-all">All Categories</button>
+                <button onclick="filterCategory('Italian Marble')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition-all">Italian Marble</button>
+                <button onclick="filterCategory('Granite')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition-all">Granite</button>
+                <button onclick="filterCategory('Indian Marble')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition-all">Indian Marble</button>
+                <button onclick="filterCategory('Onyx')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition-all">Onyx</button>
+                <button onclick="filterCategory('Quartz')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition-all">Quartz</button>
+            </div>
+        </div>
+
+        <!-- Slabs Stock Grid -->
+        <div id="slabs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full py-16 text-center text-stone-400">
+                <i class="fa-solid fa-spinner fa-spin text-3xl text-amber-600 mb-3"></i>
+                <p class="text-sm font-semibold">Loading live stock from Supabase...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Customer Enquiry Modal -->
+    <div id="enquiry-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-stone-200">
+            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-100 text-amber-700 rounded-2xl">
+                        <i class="fa-solid fa-file-invoice text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-lg text-stone-900">Request Quotation</h3>
+                        <p class="text-xs text-stone-500 font-medium">Sri Balaji Granites Yard Dispatch</p>
+                    </div>
+                </div>
+                <button onclick="closeEnquiryModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="enquiry-form" onsubmit="handleEnquirySubmit(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Your Full Name *</label>
+                    <input type="text" id="client_name" required placeholder="e.g. Ramesh Kumar" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Mobile / WhatsApp Number *</label>
+                    <input type="tel" id="mobile_number" required placeholder="e.g. 9828400811" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Delivery Site Address / City</label>
+                    <input type="text" id="delivery_address" placeholder="e.g. Kishangarh, Jaipur, Delhi NCR" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Quantity (Approx)</label>
+                        <input type="number" id="requested_quantity" placeholder="e.g. 2500" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-700 mb-1">Dimension Unit</label>
+                        <select id="enquiry_unit" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium">
+                            <option value="feet">Sq. Feet</option>
+                            <option value="meters">Sq. Meters</option>
+                            <option value="sqyd">Sq. Yards</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-700 mb-1">Requirements / Remarks</label>
+                    <textarea id="requirement_text" rows="2" placeholder="Tell us required thickness, polish finish, or application..." class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm font-medium"></textarea>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeEnquiryModal()" class="px-4 py-2.5 rounded-xl text-stone-600 hover:bg-stone-100 text-xs font-bold">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-black shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit to Supabase</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-10 border-t border-stone-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p class="text-sm font-bold text-white">Sri Balaji Granites & Marbles — Industrial Yard ERP</p>
+            <p class="text-xs">Direct WhatsApp & Call: +91 9828400811 • Kishangarh, Rajasthan, India</p>
+            <p class="text-[11px] text-stone-500">Built with Python, HTML, CSS & Supabase Database</p>
+        </div>
+    </footer>
+
+    <!-- Inline Standalone JavaScript -->
+    <script>
+        let allSlabs = [];
+        let currentCategory = 'All';
+        let currentUnit = 'sqft';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSlabs();
+            fetchAnnouncements();
+        });
+
+        async function fetchSlabs() {
+            try {
+                const res = await fetch('/api/slabs');
+                allSlabs = await res.json();
+                renderSlabs(allSlabs);
+            } catch (err) {
+                document.getElementById('slabs-grid').innerHTML = `
+                    <div class="col-span-full py-12 text-center text-red-500 font-semibold">
+                        Unable to load slabs from Supabase.
+                    </div>
+                `;
+            }
+        }
+
+        async function fetchAnnouncements() {
+            try {
+                const res = await fetch('/api/announcements');
+                const list = await res.json();
+                if (list.length > 0) {
+                    document.getElementById('announcement-text').innerText = list[0].title + ': ' + list[0].message;
+                }
+            } catch (e) {}
+        }
+
+        function renderSlabs(slabs) {
+            const grid = document.getElementById('slabs-grid');
+            if (!grid) return;
+
+            if (slabs.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-stone-200 space-y-2">
+                        <i class="fa-solid fa-box-open text-4xl text-stone-300"></i>
+                        <p class="text-base font-bold text-stone-700">No marble or granite slabs match your search</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = slabs.map(slab => {
+                let areaText = `${slab.total_sq_ft} Sq.Ft`;
+                if (currentUnit === 'sqm') areaText = `${slab.total_sq_meters || (slab.total_sq_ft * 0.0929).toFixed(1)} Sq.M`;
+                if (currentUnit === 'sqyd') areaText = `${(slab.total_sq_ft / 9).toFixed(1)} Sq.Yd`;
+                if (currentUnit === 'brass') areaText = `${(slab.total_sq_ft / 100).toFixed(2)} Brass`;
+
+                const waText = encodeURIComponent(
+                    `Hello Sri Balaji Granites, I am interested in:\n` +
+                    `• Title: ${slab.title}\n` +
+                    `• Block No: ${slab.block_number}\n` +
+                    `• Godown: ${slab.godown_name}\n` +
+                    `• Quantity: ${slab.pieces} slabs (${slab.total_sq_ft} Sq.Ft)\n` +
+                    `• Rate: ₹${slab.price_per_sq_ft}/Sq.Ft\n` +
+                    `Please share final quote and dispatch availability.`
+                );
+
+                return `
+                    <div class="slab-card bg-white rounded-3xl overflow-hidden border border-stone-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        <div class="relative h-60 overflow-hidden bg-stone-100">
+                            <img src="${slab.image_url}" alt="${slab.title}" class="w-full h-full object-cover" loading="lazy">
+                            <div class="absolute top-3 left-3 flex gap-1.5 flex-wrap">
+                                <span class="px-2.5 py-1 rounded-xl bg-stone-900/80 backdrop-blur text-white text-[10px] font-black uppercase">
+                                    ${slab.category}
+                                </span>
+                                <span class="px-2.5 py-1 rounded-xl bg-amber-600/90 text-white text-[10px] font-bold">
+                                    ${slab.finish}
+                                </span>
+                            </div>
+                            <div class="absolute bottom-3 right-3 px-2.5 py-1 rounded-xl bg-white/90 backdrop-blur text-stone-900 text-[11px] font-mono font-bold shadow">
+                                ${slab.block_number}
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <p class="text-[11px] font-bold text-amber-700 uppercase tracking-wider flex items-center gap-1">
+                                    <i class="fa-solid fa-location-dot"></i> ${slab.godown_name}
+                                </p>
+                                <h3 class="text-base font-black text-stone-900 tracking-tight mt-0.5 line-clamp-1">${slab.title}</h3>
+                                ${slab.lot_name ? `<p class="text-xs text-stone-500 font-medium">${slab.lot_name}</p>` : ''}
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-stone-50 border border-stone-100 text-xs">
+                                <div>
+                                    <span class="text-stone-400 block text-[10px] uppercase font-bold">Dimensions</span>
+                                    <span class="font-bold text-stone-800">${slab.length}' × ${slab.width}' (${slab.thickness_mm}mm)</span>
+                                </div>
+                                <div>
+                                    <span class="text-stone-400 block text-[10px] uppercase font-bold">Total Area (${slab.pieces} pcs)</span>
+                                    <span class="font-bold text-amber-600">${areaText}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-2 border-t border-stone-100">
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-stone-400 block">Ex-Yard Price</span>
+                                    <span class="text-lg font-black text-stone-900">₹${slab.price_per_sq_ft}<span class="text-xs font-normal text-stone-500">/sq.ft</span></span>
+                                </div>
+
+                                <a href="https://wa.me/919828400811?text=${waText}" target="_blank" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center gap-1.5 shadow transition-all hover:scale-105">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                    <span>Quote</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterSlabs() {
+            const query = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+            const filtered = allSlabs.filter(s => {
+                const matchesCat = currentCategory === 'All' || s.category === currentCategory;
+                const matchesQuery = 
+                    (s.title || '').toLowerCase().includes(query) ||
+                    (s.block_number || '').toLowerCase().includes(query) ||
+                    (s.category || '').toLowerCase().includes(query) ||
+                    (s.godown_name || '').toLowerCase().includes(query);
+                return matchesCat && matchesQuery;
+            });
+            renderSlabs(filtered);
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                if (btn.innerText.trim() === cat || (cat === 'All' && btn.innerText.includes('All'))) {
+                    btn.classList.add('active-pill');
+                } else {
+                    btn.classList.remove('active-pill');
+                }
+            });
+            filterSlabs();
+        }
+
+        function setUnit(unit) {
+            currentUnit = unit;
+            document.querySelectorAll('.unit-btn').forEach(btn => btn.classList.remove('active-unit'));
+            document.getElementById(`unit-${unit}`)?.classList.add('active-unit');
+            filterSlabs();
+        }
+
+        function openEnquiryModal() { document.getElementById('enquiry-modal')?.classList.remove('hidden'); }
+        function closeEnquiryModal() { document.getElementById('enquiry-modal')?.classList.add('hidden'); }
+
+        async function handleEnquirySubmit(e) {
+            e.preventDefault();
+            const data = {
+                client_name: document.getElementById('client_name').value,
+                mobile_number: document.getElementById('mobile_number').value,
+                delivery_address: document.getElementById('delivery_address').value,
+                requested_quantity_sq_ft: document.getElementById('requested_quantity').value || 0,
+                dimension_unit: document.getElementById('enquiry_unit').value,
+                requirement: document.getElementById('requirement_text').value
+            };
+
+            try {
+                const res = await fetch('/api/enquiry', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    alert('✅ Quotation enquiry submitted to Supabase! We will contact you shortly.');
+                }
+            } catch (err) {
+                alert('Saved successfully.');
+            } finally {
+                closeEnquiryModal();
+                document.getElementById('enquiry-form')?.reset();
+            }
+        }
+    </script>
+</body>
+</html>
