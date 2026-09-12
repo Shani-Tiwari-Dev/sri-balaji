@@ -1,133 +1,144 @@
-from enum import Enum
-from typing import List, Optional
-from pydantic import BaseModel, Field
-from datetime import datetime
+import uuid
+from datetime import datetime, timedelta
 
-class GodownId(str, Enum):
-    GODOWN_1 = "godown_1"
-    GODOWN_2 = "godown_2"
-    GODOWN_3 = "godown_3"
-    GODOWN_A = "godown_a"
-    GODOWN_B = "godown_b"
-    GODOWN_C = "godown_c"
+from flask_sqlalchemy import SQLAlchemy
 
-class CategoryType(str, Enum):
-    ITALIAN_MARBLE = "Italian Marble"
-    INDIAN_MARBLE = "Indian Marble"
-    GRANITE = "Granite"
-    QUARTZ = "Quartz"
-    ONYX = "Onyx"
-    SANDSTONE = "Sandstone"
+db = SQLAlchemy()
 
-class DimensionUnit(str, Enum):
-    METERS = "meters"
-    CENTIMETERS = "centimeters"
-    FEET = "feet"
-    INCHES = "inches"
+TRASH_RETENTION_DAYS = 7
 
-class FinishType(str, Enum):
-    POLISHED = "Polished"
-    HONED = "Honed"
-    LEATHERED = "Leathered"
-    FLAMED = "Flamed"
-    LAPPATO = "Lappato"
 
-class SlabStock(BaseModel):
-    id: str
-    godownId: GodownId
-    godownName: str
-    blockNumber: str
-    title: str
-    category: CategoryType
-    imageUrl: str
-    length: float
-    width: float
-    unit: DimensionUnit
-    pieces: int
-    totalSqFt: float
-    totalSqMeters: float
-    thicknessMm: int
-    finish: FinishType
-    pricePerSqFt: float
-    isSold: bool = False
-    lotName: Optional[str] = None
-    createdAt: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+def gen_id():
+    return uuid.uuid4().hex
 
-class SlabStockCreate(BaseModel):
-    godownId: GodownId
-    godownName: str
-    blockNumber: str
-    title: str
-    category: CategoryType
-    imageUrl: Optional[str] = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-    length: float
-    width: float
-    unit: DimensionUnit
-    pieces: int
-    thicknessMm: int
-    finish: FinishType
-    pricePerSqFt: float
-    lotName: Optional[str] = None
 
-class TrashItem(BaseModel):
-    id: str
-    slab: SlabStock
-    deletedAt: str
-    deletedBy: str
-    expiresAt: str
+class Slab(db.Model):
+    __tablename__ = "slabs"
 
-class CustomerQuery(BaseModel):
-    id: str
-    orderNumber: Optional[str] = None
-    clientName: str
-    mobileNumber: str
-    deliveryAddress: Optional[str] = None
-    preferredGodown: Optional[str] = "any"
-    requirement: str
-    dimensionUnit: DimensionUnit
-    requestedQuantitySqFt: float
-    selectedSlabs: List[SlabStock] = []
-    totalEstimatedCost: Optional[float] = 0.0
-    status: str = "Pending"  # Pending, Contacted, Quoted, Closed
-    createdAt: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
-    notes: Optional[str] = None
+    id = db.Column(db.String(36), primary_key=True, default=gen_id)
+    godown_id = db.Column(db.String(32), nullable=False)          # godown_1 / godown_2 / godown_3
+    godown_name = db.Column(db.String(120), nullable=False)
+    block_number = db.Column(db.String(60))
+    title = db.Column(db.String(200), nullable=False)
+    category = db.Column(db.String(60), nullable=False)           # Italian Marble / Granite / ...
+    image_url = db.Column(db.Text)
+    length = db.Column(db.Float, nullable=False)
+    width = db.Column(db.Float, nullable=False)
+    unit = db.Column(db.String(20), nullable=False, default="feet")  # meters|centimeters|feet|inches
+    pieces = db.Column(db.Integer, nullable=False, default=1)
+    total_sq_ft = db.Column(db.Float, nullable=False, default=0)
+    total_sq_meters = db.Column(db.Float, nullable=False, default=0)
+    thickness_mm = db.Column(db.Float)
+    finish = db.Column(db.String(40))                              # Polished/Honed/Leathered/Flamed/Lappato
+    price_per_sq_ft = db.Column(db.Float, nullable=False, default=0)
+    is_sold = db.Column(db.Boolean, nullable=False, default=False)
+    lot_name = db.Column(db.String(120))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-class Announcement(BaseModel):
-    id: str
-    title: str
-    message: str
-    isActive: bool = True
-    date: str = Field(default_factory=lambda: datetime.utcnow().strftime("%Y-%m-%d"))
-    type: str = "general"  # offer, arrival, general
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "godownId": self.godown_id,
+            "godownName": self.godown_name,
+            "blockNumber": self.block_number,
+            "title": self.title,
+            "category": self.category,
+            "imageUrl": self.image_url,
+            "length": self.length,
+            "width": self.width,
+            "unit": self.unit,
+            "pieces": self.pieces,
+            "totalSqFt": self.total_sq_ft,
+            "totalSqMeters": self.total_sq_meters,
+            "thicknessMm": self.thickness_mm,
+            "finish": self.finish,
+            "pricePerSqFt": self.price_per_sq_ft,
+            "isSold": self.is_sold,
+            "lotName": self.lot_name,
+            "createdAt": self.created_at.isoformat() + "Z" if self.created_at else None,
+        }
 
-class LoginRequest(BaseModel):
-    username: str
-    password: str
 
-class LoginResponse(BaseModel):
-    success: bool
-    message: str
-    username: Optional[str] = None
-    role: Optional[str] = None
-    name: Optional[str] = None
-    godownId: Optional[str] = None
-    godownName: Optional[str] = None
+class TrashItem(db.Model):
+    __tablename__ = "trash_items"
 
-class CalculationRequest(BaseModel):
-    length: float
-    width: float
-    unit: DimensionUnit
-    pieces: int = 1
-    pricePerSqFt: Optional[float] = 0.0
+    id = db.Column(db.String(36), primary_key=True, default=gen_id)
+    slab_snapshot = db.Column(db.JSON, nullable=False)
+    deleted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    deleted_by = db.Column(db.String(80))
+    expires_at = db.Column(db.DateTime)
 
-class CalculationResponse(BaseModel):
-    sqFt: float
-    sqMeters: float
-    sqCm: float
-    dimensionsMeters: str
-    dimensionsCm: str
-    dimensionsFeet: str
-    ratePerSqFt: float
-    ratePerSqMeter: float
-    ratePerSqCm: float
-    estimatedTotalCost: float
+    def to_dict(self):
+        remaining = None
+        if self.expires_at:
+            remaining = max(0, (self.expires_at - datetime.utcnow()).days)
+        return {
+            "id": self.id,
+            "slab": self.slab_snapshot,
+            "deletedAt": self.deleted_at.isoformat() + "Z" if self.deleted_at else None,
+            "deletedBy": self.deleted_by,
+            "expiresAt": self.expires_at.isoformat() + "Z" if self.expires_at else None,
+            "remainingDays": remaining,
+        }
+
+
+class CustomerQuery(db.Model):
+    __tablename__ = "customer_queries"
+
+    id = db.Column(db.String(36), primary_key=True, default=gen_id)
+    order_number = db.Column(db.String(40))
+    client_name = db.Column(db.String(120), nullable=False)
+    mobile_number = db.Column(db.String(30), nullable=False)
+    delivery_address = db.Column(db.Text)
+    preferred_godown = db.Column(db.String(32), default="any")
+    requirement = db.Column(db.Text)
+    dimension_unit = db.Column(db.String(20), default="feet")
+    requested_quantity_sqft = db.Column(db.Float, default=0)
+    selected_slabs = db.Column(db.JSON, default=list)
+    total_estimated_cost = db.Column(db.Float)
+    status = db.Column(db.String(20), default="Pending")  # Pending/Contacted/Quoted/Closed
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    notes = db.Column(db.Text)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "orderNumber": self.order_number,
+            "clientName": self.client_name,
+            "mobileNumber": self.mobile_number,
+            "deliveryAddress": self.delivery_address,
+            "preferredGodown": self.preferred_godown,
+            "requirement": self.requirement,
+            "dimensionUnit": self.dimension_unit,
+            "requestedQuantitySqFt": self.requested_quantity_sqft,
+            "selectedSlabs": self.selected_slabs or [],
+            "totalEstimatedCost": self.total_estimated_cost,
+            "status": self.status,
+            "createdAt": self.created_at.isoformat() + "Z" if self.created_at else None,
+            "notes": self.notes,
+        }
+
+
+class Announcement(db.Model):
+    __tablename__ = "announcements"
+
+    id = db.Column(db.String(36), primary_key=True, default=gen_id)
+    title = db.Column(db.String(150), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    is_active = db.Column(db.Boolean, default=True)
+    type = db.Column(db.String(20), default="general")  # offer/arrival/general
+    date = db.Column(db.String(40))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "message": self.message,
+            "isActive": self.is_active,
+            "type": self.type,
+            "date": self.date,
+        }
+
+
+def make_trash_expiry():
+    return datetime.utcnow() + timedelta(days=TRASH_RETENTION_DAYS)
