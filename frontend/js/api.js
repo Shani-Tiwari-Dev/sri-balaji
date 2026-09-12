@@ -41,24 +41,6 @@ async function apiRequest(path, { method = "GET", body, auth = false, isCsv = fa
   return data;
 }
 
-async function apiUpload(path, formData) {
-  const headers = {};
-  const token = authToken();
-  if (token) headers["Authorization"] = "Bearer " + token;
-  // No Content-Type here on purpose — the browser sets the multipart
-  // boundary itself when the body is a FormData object.
-  const res = await fetch(API_BASE + path, { method: "POST", headers, body: formData });
-
-  let data = null;
-  try { data = await res.json(); } catch (e) { /* empty body */ }
-
-  if (!res.ok) {
-    const message = (data && data.error) || `Upload failed (${res.status})`;
-    throw new Error(message);
-  }
-  return data;
-}
-
 const api = {
   // public
   getMeta: () => apiRequest("/api/meta"),
@@ -78,11 +60,6 @@ const api = {
   login: (username, password) => apiRequest("/api/auth/login", { method: "POST", body: { username, password } }),
 
   // staff
-  uploadImage: (file) => {
-    const fd = new FormData();
-    fd.append("image", file);
-    return apiUpload("/api/uploads", fd);
-  },
   createSlab: (payload) => apiRequest("/api/slabs", { method: "POST", body: payload, auth: true }),
   updateSlab: (id, payload) => apiRequest(`/api/slabs/${id}`, { method: "PUT", body: payload, auth: true }),
   deleteSlab: (id) => apiRequest(`/api/slabs/${id}`, { method: "DELETE", auth: true }),

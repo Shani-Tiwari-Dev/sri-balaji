@@ -48,12 +48,3 @@ class Config:
 
     SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
     SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
-    # Service-role key is required for the backend to write into Storage on
-    # the staff member's behalf (the anon key can't bypass bucket policies).
-    # Never expose this key to the frontend.
-    SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
-    SUPABASE_STORAGE_BUCKET = os.environ.get("SUPABASE_STORAGE_BUCKET", "slab-images")
-
-    # Hard cap on uploaded slab photos (bytes). Keeps Storage usage/cost
-    # predictable and matches the check in the /api/uploads route.
-    MAX_CONTENT_LENGTH = 6 * 1024 * 1024

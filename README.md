@@ -85,65 +85,14 @@ password from `STAFF_PASSWORDS` in your `.env` (defaults to
 | `manager_g2`, `chittoor`, `g2` | Manager | Chittoor Factory only |
 | `manager_g3`, `vizag`, `g3` | Manager | Vishakapatnam Export only |
 
-## Slab images (Supabase Storage)
-
-The staff "Add/Edit Slab" form only accepts a file upload now — there's no
-more free-text Image URL field. On file select, the browser uploads the
-photo straight to `POST /api/uploads` (staff-only), which stores it and
-returns a URL that's saved on the slab record.
-
-Where that photo actually lands depends on your env vars:
-
-1. **`SUPABASE_URL` + `SUPABASE_SERVICE_KEY` set (recommended, used in production)**
-   The backend uploads the file to a Supabase Storage bucket over its REST
-   API and returns the bucket's public URL. Set up once:
-   - In your Supabase project, go to **Storage** and create a bucket (e.g.
-     `slab-images`), marked **Public** (product photos don't need signed
-     URLs, and this keeps page loads fast and CDN-cacheable).
-   - Copy **Project Settings → API → `service_role` key** (not the `anon`
-     key — the anon key is subject to Storage RLS policies and can't
-     reliably write on the staff member's behalf) into `SUPABASE_SERVICE_KEY`.
-     **Keep this key server-side only** — never send it to the frontend.
-   - Optionally set `SUPABASE_STORAGE_BUCKET` if you named the bucket
-     something other than `slab-images`.
-2. **Neither set (local dev fallback)**
-   Files are written to `frontend/uploads/` and served from `/uploads/...`.
-   This is only for convenience while developing locally against SQLite —
-   it does **not** work on Vercel (its filesystem is read-only/ephemeral
-   per invocation, so uploaded files vanish on the next cold start).
-
-Uploads are capped at 6MB and restricted to image MIME types, enforced
-both client- and server-side.
-
-### Why Supabase Storage over committing images to GitHub
-
-You could technically store slab photos in the Git repo (e.g. a `static/`
-folder) and serve them from there, but for this app Supabase Storage is
-the better fit:
-
-| | Supabase Storage | Images committed to GitHub |
-|---|---|---|
-| **Add/replace a photo** | Instant — staff upload from the ERP form, live immediately | Requires a `git commit` + redeploy for every single slab photo |
-| **Fits the workflow** | Matches how staff actually add stock (several times a day, from a phone/tablet at the yard) | Not practical for non-developers adding stock day-to-day |
-| **Storage limits** | Built for binary/media at scale; free tier alone is 1GB, scales with your Supabase plan | GitHub repos are meant for code — large binary history bloats clone/deploy times and GitHub actively discourages using it as a CDN |
-| **Delivery** | Served via Supabase's CDN with cache headers, resizing options | Fine via GitHub Pages/raw URLs for a handful of static assets, but not built for this |
-| **Already in your stack** | You're already using Supabase for Postgres — one dashboard, one bill, and `SUPABASE_URL`/keys are already wired into `config.py` | Adds a second system to think about for something the DB layer's neighbor already does well |
-| **Deletes/replaces** | Straightforward API call, e.g. when a slab is edited or trashed | Rewriting Git history to remove an old image is messy; repo only grows over time |
-
-**Bottom line:** commit code to GitHub, store photos in Supabase Storage
-(or an equivalent object store like S3/Cloudinary/R2 if you ever move off
-Supabase) — pairing "images in Git" with a daily-changing product catalog
-is the wrong tool for the job, not just a style preference.
-
 ## Security — read before going live
 
 This preserves the original prototype's shared/universal-password login
 model (documented in the project report) so the app works immediately.
 **Before real deployment**, replace it with per-user accounts and hashed
 passwords — the report's Section 10.2 has the full checklist (real
-authentication, server-side validation, audit trail, real-time sync,
-backups). Image upload to Supabase Storage (also called out in that
-checklist) is now implemented — see "Slab images" above.
+authentication, image upload to Supabase Storage, server-side validation,
+audit trail, real-time sync, backups).
 
 Also replace the placeholder `picsum.photos` product images in `seed.py`
 with real slab photography before launch.
@@ -176,11 +125,6 @@ same function.
    - `SECRET_KEY` — a long random string
    - `STAFF_PASSWORDS` — your own comma-separated list
    - `CORS_ORIGINS` — your Vercel domain (or `*` while testing)
-   - `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` — required for slab photo
-     uploads to work on Vercel (see "Slab images" below); without these,
-     uploads silently fail to persist because Vercel's filesystem is
-     ephemeral
-   - `SUPABASE_STORAGE_BUCKET` — optional, defaults to `slab-images`
    - `WHATSAPP_NUMBER`, `WHATSAPP_NUMBER_SECONDARY` — optional
 3. Deploy. Vercel builds `api/index.py`, which imports the same Flask app
    from `backend/app.py`, so every route (`/`, `/staff`, `/api/...`, static

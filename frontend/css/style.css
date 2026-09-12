@@ -10,13 +10,13 @@
 
 :root {
   --bg: #ffffff;
-  --ink: #16273f;
-  --ink-soft: #5b6570;
-  --ink-faint: #98a0a8;
-  --line: #dfe1e4;
-  --surface: #f3f4f5;
-  --surface-hover: #e9eaec;
-  --stamp-bg: #16273f;
+  --ink: #0a0a0a;
+  --ink-soft: #6b6b6b;
+  --ink-faint: #a3a3a0;
+  --line: #e6e5e1;
+  --surface: #f6f5f2;
+  --surface-hover: #efeee9;
+  --stamp-bg: #0a0a0a;
   --stamp-ink: #ffffff;
   --status-pending: #8a6d00;
   --status-contacted: #1d5f8a;
@@ -286,7 +286,7 @@ input, select, textarea { font-family: inherit; font-size: 14px; }
 .btn-sm { padding: 8px 13px; font-size: 12px; }
 .btn-block { width: 100%; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-whatsapp { background: var(--ink); }
+.btn-whatsapp { background: #1a1a1a; }
 .btn-whatsapp svg { width: 16px; height: 16px; }
 
 /* ---------------------------------------------------------------- drawer */
