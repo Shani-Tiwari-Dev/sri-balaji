@@ -1,7 +1,10 @@
 import csv
 import io
+import os
+import uuid
 from datetime import datetime
 
+import requests
 from flask import Flask, request, jsonify, send_from_directory, Response
 from flask_cors import CORS
 
@@ -101,6 +104,77 @@ def create_app():
         role = resolve_role(username)
         token, payload = issue_token(username, role)
         return jsonify({"token": token, "session": payload})
+
+    # ---------------------------------------------------------------
+    # Image uploads (staff-only) — used by the "Add/Edit Slab" form.
+    # Uploads go to Supabase Storage when SUPABASE_URL + SUPABASE_SERVICE_KEY
+    # are configured; otherwise they fall back to a local /uploads folder
+    # under the frontend static dir so the app still works out of the box
+    # in local dev. See README "Slab images" section for setup + trade-offs.
+    # ---------------------------------------------------------------
+    ALLOWED_IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
+    LOCAL_UPLOAD_DIR = os.path.join(app.static_folder, "uploads")
+
+    @app.post("/api/uploads")
+    @require_staff
+    def upload_image():
+        file = request.files.get("image")
+        if not file or not file.filename:
+            return jsonify({"error": "No image file provided."}), 400
+        if not (file.mimetype or "").startswith("image/"):
+            return jsonify({"error": "Only image files are allowed."}), 400
+
+        file.seek(0, os.SEEK_END)
+        size_bytes = file.tell()
+        file.seek(0)
+        if size_bytes > app.config["MAX_CONTENT_LENGTH"]:
+            return jsonify({"error": "Image is too large (max 6MB)."}), 400
+
+        ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+        if ext not in ALLOWED_IMAGE_EXTENSIONS:
+            ext = "jpg"
+        object_name = f"{uuid.uuid4().hex}.{ext}"
+        file_bytes = file.read()
+
+        supabase_url = app.config.get("SUPABASE_URL")
+        service_key = app.config.get("SUPABASE_SERVICE_KEY")
+        bucket = app.config.get("SUPABASE_STORAGE_BUCKET")
+
+        if supabase_url and service_key:
+            endpoint = f"{supabase_url.rstrip('/')}/storage/v1/object/{bucket}/{object_name}"
+            try:
+                resp = requests.post(
+                    endpoint,
+                    headers={
+                        "Authorization": f"Bearer {service_key}",
+                        "apikey": service_key,
+                        "Content-Type": file.mimetype or "application/octet-stream",
+                        "x-upsert": "true",
+                    },
+                    data=file_bytes,
+                    timeout=15,
+                )
+            except requests.RequestException as exc:
+                return jsonify({"error": f"Could not reach Supabase Storage: {exc}"}), 502
+
+            if resp.status_code not in (200, 201):
+                app.logger.warning("Supabase Storage upload failed: %s %s", resp.status_code, resp.text)
+                return jsonify({"error": "Image storage upload failed. Check SUPABASE_SERVICE_KEY and bucket settings."}), 502
+
+            public_url = f"{supabase_url.rstrip('/')}/storage/v1/object/public/{bucket}/{object_name}"
+            return jsonify({"imageUrl": public_url}), 201
+
+        # Local fallback — fine for `python app.py` / a normal long-running
+        # host (Option A). NOT durable on Vercel: its filesystem is
+        # read-only/ephemeral per invocation, so files saved here disappear.
+        # Configure SUPABASE_URL + SUPABASE_SERVICE_KEY before deploying there.
+        try:
+            os.makedirs(LOCAL_UPLOAD_DIR, exist_ok=True)
+            with open(os.path.join(LOCAL_UPLOAD_DIR, object_name), "wb") as f:
+                f.write(file_bytes)
+        except OSError as exc:
+            return jsonify({"error": f"Could not save image locally: {exc}. Configure Supabase Storage instead."}), 500
+        return jsonify({"imageUrl": f"/uploads/{object_name}"}), 201
 
     # ---------------------------------------------------------------
     # Slabs — public read, staff write

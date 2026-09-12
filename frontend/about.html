@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="css/style.css" />
 <style>
   .about-wrap { max-width: 720px; margin: 0 auto; padding: 60px 28px 90px; }
-  .about-wrap h1 { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 44px; line-height: 0.98; margin-bottom: 10px; }
-  .about-wrap .lede { color: var(--ink-soft); margin-bottom: 40px; font-size: 15px; max-width: 46ch; }
+  .about-wrap h1 { font-family: var(--font-display); font-size: 30px; margin-bottom: 6px; }
+  .about-wrap .lede { color: var(--ink-soft); margin-bottom: 40px; font-size: 15px; }
   .about-wrap p { margin-bottom: 18px; }
-  .facility-list { list-style: none; margin: 30px 0; padding: 0; border-top: 1px solid var(--ink); }
+  .facility-list { list-style: none; margin: 30px 0; padding: 0; border-top: 1px solid var(--line); }
   .facility-list li { border-bottom: 1px solid var(--line); padding: 16px 0; display: flex; justify-content: space-between; gap: 16px; }
-  .facility-list .name { font-weight: 700; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; font-size: 16px; }
+  .facility-list .name { font-weight: 600; }
   .facility-list .role { color: var(--ink-soft); font-size: 13px; text-align: right; }
-  .contact-block { background: var(--bg-deep); border-left: 4px solid var(--rust); border-radius: var(--r-md); padding: 22px; margin-top: 30px; font-size: 13.5px; }
+  .contact-block { background: var(--surface); padding: 22px; margin-top: 30px; font-size: 13.5px; }
   .contact-block div { margin-bottom: 8px; }
   .contact-block .mono { color: var(--ink-soft); }
 </style>
@@ -32,7 +32,9 @@
   <nav class="main-nav">
     <a href="/">Catalog</a>
     <a href="/about.html" class="active">About</a>
-    <button class="btn btn-sm" id="enquireBtn" type="button" data-open-enquiry>Enquire</button>
+    <a href="/staff" class="icon-btn" aria-label="Staff login">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.6"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.4-3.8 4.2-5.8 7.5-5.8s6.1 2 7.5 5.8"/></svg>
+    </a>
   </nav>
 </header>
 
@@ -67,20 +69,6 @@
   </div>
 </footer>
 
-<!-- General enquiry (independent of the slab-based cart, still lands as a normal query) -->
-<div class="overlay" id="queryOverlay">
-  <div class="modal-wrap">
-    <button class="modal-close" id="closeQueryModal" aria-label="Close">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0a0a0a" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19"/></svg>
-    </button>
-    <div class="modal modal-solo" id="queryModalContent"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-<script src="js/api.js"></script>
-<script src="js/enquiry.js"></script>
 </body>
 </html>

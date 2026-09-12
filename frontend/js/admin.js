@@ -18,6 +18,9 @@
     meta: null,
     editingSlabId: null,
     lastCalc: null,
+    uploadedImageUrl: null,   // set once the file has finished uploading to storage
+    existingImageUrl: null,   // the slab's current image, kept if editing without a new upload
+    imageUploading: false,
   };
 
   // ---------------------------------------------------------------- auth
@@ -141,6 +144,7 @@
     $("#addSlabBtn").addEventListener("click", () => openSlabForm());
     $("#slabFormCancel").addEventListener("click", closeSlabForm);
     $("#slabForm").addEventListener("submit", submitSlabForm);
+    $("#sfImageFile").addEventListener("change", handleSlabImageFile);
   }
 
   async function loadStock() {
@@ -218,6 +222,9 @@
 
   function openSlabForm(slab) {
     state.editingSlabId = slab ? slab.id : null;
+    state.uploadedImageUrl = null;
+    state.existingImageUrl = slab?.imageUrl || null;
+    state.imageUploading = false;
     $("#slabFormTitle").textContent = slab ? "Edit Slab" : "Add Slab";
     $("#sfTitle").value = slab?.title || "";
     $("#sfCategory").value = slab?.category || state.meta.categories[0] || "";
@@ -230,14 +237,70 @@
     $("#sfPieces").value = slab?.pieces ?? 1;
     $("#sfThickness").value = slab?.thicknessMm ?? "";
     $("#sfRate").value = slab?.pricePerSqFt ?? "";
-    $("#sfImage").value = slab?.imageUrl || "";
+    $("#sfImageFile").value = "";
+    $("#sfImageLabel").textContent = slab ? "Slab Image (leave blank to keep current photo)" : "Slab Image";
+    const status = $("#sfImageStatus");
+    status.style.display = "none"; status.textContent = "";
+    const preview = $("#sfImagePreview");
+    if (slab?.imageUrl) { preview.src = slab.imageUrl; preview.style.display = "block"; }
+    else { preview.src = ""; preview.style.display = "none"; }
     $("#sfSold").checked = !!slab?.isSold;
     $("#slabFormOverlay").classList.add("open");
   }
   function closeSlabForm() { $("#slabFormOverlay").classList.remove("open"); }
 
+  async function handleSlabImageFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      showToast("Please choose an image file");
+      e.target.value = "";
+      return;
+    }
+    if (file.size > 6 * 1024 * 1024) {
+      showToast("Image is too large (max 6MB)");
+      e.target.value = "";
+      return;
+    }
+
+    const preview = $("#sfImagePreview");
+    const status = $("#sfImageStatus");
+    const objectUrl = URL.createObjectURL(file);
+    preview.src = objectUrl;
+    preview.style.display = "block";
+
+    state.uploadedImageUrl = null;
+    state.imageUploading = true;
+    status.style.display = "block";
+    status.textContent = "Uploading…";
+
+    try {
+      const { imageUrl } = await api.uploadImage(file);
+      state.uploadedImageUrl = imageUrl;
+      status.textContent = "Uploaded ✓";
+    } catch (err) {
+      showToast(err.message);
+      status.textContent = "Upload failed — please try again";
+      e.target.value = "";
+    } finally {
+      state.imageUploading = false;
+      URL.revokeObjectURL(objectUrl);
+    }
+  }
+
   async function submitSlabForm(e) {
     e.preventDefault();
+
+    if (state.imageUploading) {
+      showToast("Please wait for the image to finish uploading");
+      return;
+    }
+    const imageUrl = state.uploadedImageUrl || state.existingImageUrl;
+    if (!imageUrl) {
+      showToast("Please upload a slab image");
+      return;
+    }
+
     const payload = {
       title: $("#sfTitle").value.trim(),
       category: $("#sfCategory").value,
@@ -250,7 +313,7 @@
       pieces: parseInt($("#sfPieces").value, 10) || 1,
       thicknessMm: $("#sfThickness").value ? parseFloat($("#sfThickness").value) : null,
       pricePerSqFt: parseFloat($("#sfRate").value),
-      imageUrl: $("#sfImage").value.trim() || `https://picsum.photos/seed/${Date.now()}/900/700`,
+      imageUrl,
       isSold: $("#sfSold").checked,
     };
     const btn = $("#slabFormSubmit");
